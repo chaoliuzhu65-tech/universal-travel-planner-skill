@@ -1,0 +1,25 @@
+{
+  "name": "universal-travel-planner",
+  "version": "1.0.0",
+  "description": "通用商旅出行规划技能。面向所有商务出差人士，一站式AI出行规划+全平台酒店比价+HTML报告生成。集成12306 MCP+高德地图+航班搜索。",
+  "homepage": "https://github.com/YOUR_USERNAME/universal-travel-planner-skill",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YOUR_USERNAME/universal-travel-planner-skill.git"
+  },
+  "issues": "https://github.com/YOUR_USERNAME/universal-travel-planner-skill/issues",
+  "license": "MIT",
+  "triggers": [
+    "出差", "出行规划", "旅行计划", "行程安排", "订酒店", "机票", "火车票",
+    "高铁", "规划行程", "预算", "目的地攻略", "itinerary", "trip plan", "travel"
+  ],
+  "tags": [
+    "travel", "business-trip", "itinerary", "hotel", "flight", "train",
+    "budget", "html-report", "12306", "amap", "china-travel"
+  ],
+  "dependencies": {
+    "mcp": ["12306-mcp", "amap-mcp"],
+    "optional": ["xhs-mcp"]
+  },
+  "author": "AI Travel Planner Community"
+}

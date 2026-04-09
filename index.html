@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧳 Universal Travel Planner Skill</title>
+    <meta name="description" content="通用商旅出行规划 AI Skill - 全平台酒店比价、实时交通查询、智能预算计算、精美HTML报告生成">
+    <meta name="theme-color" content="#1a1a2e">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent-light: #ff6b81;
+            --text: #eaeaea;
+            --text-muted: #a0a0b0;
+            --card-bg: #1e1e36;
+            --card-border: rgba(233, 69, 96, 0.2);
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 60px 20px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(233, 69, 96, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(46, 204, 113, 0.05) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, -20px); }
+        }
+        
+        .hero-content { position: relative; z-index: 1; }
+        
+        .hero-emoji {
+            font-size: 64px;
+            margin-bottom: 16px;
+            display: block;
+            animation: bounce 3s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero .subtitle {
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid;
+        }
+        
+        .badge-mit { background: rgba(46, 204, 113, 0.15); border-color: rgba(46, 204, 113, 0.3); color: var(--success); }
+        .badge-version { background: rgba(233, 69, 96, 0.15); border-color: rgba(233, 69, 96, 0.3); color: var(--accent-light); }
+        .badge-platform { background: rgba(243, 156, 18, 0.15); border-color: rgba(243, 156, 18, 0.3); color: var(--warning); }
+        
+        /* Main Content */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        
+        .action-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(233, 69, 96, 0.2);
+        }
+        
+        .action-card .icon { font-size: 32px; margin-bottom: 12px; }
+        .action-card h3 { font-size: 1.1rem; margin-bottom: 8px; color: #fff; }
+        .action-card p { font-size: 0.85rem; color: var(--text-muted); }
+        .action-card .arrow {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--accent-light);
+            font-size: 0.85rem;
+        }
+        
+        /* Feature Grid */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .section-title .emoji { margin-right: 8px; }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        
+        .feature {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .feature:hover { transform: scale(1.02); }
+        .feature .icon { font-size: 28px; margin-bottom: 10px; display: block; }
+        .feature h4 { font-size: 0.95rem; margin-bottom: 6px; color: #fff; }
+        .feature p { font-size: 0.8rem; color: var(--text-muted); }
+        
+        /* Platform Ticker */
+        .platforms {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        
+        .platforms h3 {
+            text-align: center;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        
+        .platform-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .platform-tag {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text);
+        }
+        
+        /* Install Section */
+        .install {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .install h3 { text-align: center; margin-bottom: 16px; }
+        
+        .code-block {
+            background: rgba(0,0,0,0.4);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            line-height: 1.8;
+            color: #c8d6e5;
+            position: relative;
+        }
+        
+        .code-block .comment { color: #636e72; }
+        .code-block .cmd { color: var(--accent-light); }
+        .code-block .url { color: var(--success); }
+        
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+        
+        /* Architecture */
+        .arch {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        
+        .arch h3 { text-align: center; margin-bottom: 20px; }
+        
+        .arch-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .arch-step {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 10px;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .arch-step .num {
+            display: block;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--accent-light);
+        }
+        
+        .arch-arrow {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        
+        .footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+        
+        .footer a:hover { text-decoration: underline; }
+        
+        /* Mobile */
+        @media (max-width: 640px) {
+            .hero { padding: 40px 16px 30px; }
+            .hero-emoji { font-size: 48px; }
+            .quick-actions { grid-template-columns: 1fr; }
+            .features { grid-template-columns: repeat(2, 1fr); }
+            .arch-flow { flex-direction: column; }
+            .arch-arrow { transform: rotate(90deg); }
+            .container { padding: 0 16px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="hero-content">
+            <span class="hero-emoji">🧳</span>
+            <h1>Universal Travel Planner</h1>
+            <p class="subtitle">通用商旅出行规划 AI Skill — 全平台比价 · 实时交通 · 智能预算 · 一键报告</p>
+            <div class="badges">
+                <span class="badge badge-mit">📄 MIT License</span>
+                <span class="badge badge-version">🏷️ v1.0.0</span>
+                <span class="badge badge-platform">🤖 AI Skill</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="demo_beijing_travel.html" class="action-card">
+                <div class="icon">📋</div>
+                <h3>查看演示报告</h3>
+                <p>北京→上海出差完整行程规划，含交通对比、酒店推荐、预算明细</p>
+                <span class="arrow">查看演示 →</span>
+            </a>
+            <a href="https://github.com/chaoliuzhu65-tech/universal-travel-planner-skill" class="action-card">
+                <div class="icon">📦</div>
+                <h3>GitHub 仓库</h3>
+                <p>获取源码、提交 Issue、参与贡献</p>
+                <span class="arrow">前往仓库 →</span>
+            </a>
+            <a href="SKILL.md" class="action-card">
+                <div class="icon">📖</div>
+                <h3>Skill 技术文档</h3>
+                <p>完整的技能说明、执行流程、工具链集成文档</p>
+                <span class="arrow">查看文档 →</span>
+            </a>
+        </div>
+
+        <!-- Core Features -->
+        <h2 class="section-title"><span class="emoji">✨</span>核心能力</h2>
+        <div class="features">
+            <div class="feature">
+                <span class="icon">🚄✈️🚗</span>
+                <h4>交通方案对比</h4>
+                <p>高铁/飞机/自驾多维对比，12306实时查票</p>
+            </div>
+            <div class="feature">
+                <span class="icon">🏨💰</span>
+                <h4>全平台酒店比价</h4>
+                <p>携程/飞猪/去哪儿/Booking/Agoda 一键比价</p>
+            </div>
+            <div class="feature">
+                <span class="icon">🗺️📍</span>
+                <h4>高德地图集成</h4>
+                <p>路径规划、POI搜索、距离矩阵</p>
+            </div>
+            <div class="feature">
+                <span class="icon">💼📊</span>
+                <h4>智能预算计算</h4>
+                <p>经济/舒适/商务三档标准，自动估算</p>
+            </div>
+            <div class="feature">
+                <span class="icon">🌤️☂️</span>
+                <h4>天气出行建议</h4>
+                <p>目的地天气查询 + 穿衣/出行提醒</p>
+            </div>
+            <div class="feature">
+                <span class="icon">📱🧾</span>
+                <h4>HTML报告生成</h4>
+                <p>精美响应式报告，手机端完美适配</p>
+            </div>
+            <div class="feature">
+                <span class="icon">📅⏰</span>
+                <h4>行程时间线</h4>
+                <p>可视化日程编排，时间节点清晰</p>
+            </div>
+            <div class="feature">
+                <span class="icon">🧳✅</span>
+                <h4>出行清单</h4>
+                <p>商务出差必备物品清单自动生成</p>
+            </div>
+        </div>
+
+        <!-- Supported Platforms -->
+        <div class="platforms">
+            <h3>🔗 支持的预订平台</h3>
+            <div class="platform-list">
+                <a href="https://www.12306.cn/" target="_blank" class="platform-tag">🚄 12306</a>
+                <a href="https://hotels.ctrip.com/" target="_blank" class="platform-tag">🏨 携程</a>
+                <a href="https://www.fliggy.com/" target="_blank" class="platform-tag">🐧 飞猪</a>
+                <a href="https://hotel.qunar.com/" target="_blank" class="platform-tag">🦅 去哪儿</a>
+                <a href="https://www.booking.com/" target="_blank" class="platform-tag">🌍 Booking</a>
+                <a href="https://www.agoda.com/" target="_blank" class="platform-tag">🏠 Agoda</a>
+                <a href="https://restapi.amap.com/" target="_blank" class="platform-tag">🗺️ 高德地图</a>
+                <a href="https://flights.ctrip.com/" target="_blank" class="platform-tag">✈️ 携程机票</a>
+            </div>
+        </div>
+
+        <!-- Architecture -->
+        <div class="arch">
+            <h3>⚙️ 执行流程</h3>
+            <div class="arch-flow">
+                <div class="arch-step"><span class="num">1</span>需求理解</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-step"><span class="num">2</span>数据采集</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-step"><span class="num">3</span>行程编排</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-step"><span class="num">4</span>报告生成</div>
+                <span class="arch-arrow">→</span>
+                <div class="arch-step"><span class="num">5</span>对话引导</div>
+            </div>
+        </div>
+
+        <!-- Install -->
+        <div class="install">
+            <h3>🚀 快速安装</h3>
+            <div class="code-block">
+                <button class="copy-btn" onclick="this.textContent='已复制!'">复制</button>
+                <span class="comment"># 1. 克隆仓库</span><br>
+                <span class="cmd">git clone</span> <span class="url">https://github.com/chaoliuzhu65-tech/universal-travel-planner-skill.git</span><br><br>
+                <span class="comment"># 2. 复制到 WorkBuddy Skills 目录</span><br>
+                <span class="cmd">cp -r</span> universal-travel-planner-skill ~/.workbuddy/skills/<br><br>
+                <span class="comment"># 3. 配置环境变量（可选）</span><br>
+                <span class="cmd">export</span> AMAP_WEB_KEY=你的高德Web服务Key<br><br>
+                <span class="comment"># 4. 在对话中使用</span><br>
+                <span class="comment"># 说 "帮我规划下周去北京的出差行程" 即可触发</span>
+            </div>
+        </div>
+
+        <!-- MCP Tools -->
+        <div class="platforms">
+            <h3>🔧 集成的 MCP 工具</h3>
+            <div class="platform-list">
+                <span class="platform-tag">12306-mcp (v0.3.8)</span>
+                <span class="platform-tag">高德地图 MCP</span>
+                <span class="platform-tag">xhs-mcp</span>
+                <span class="platform-tag">高德天气 API</span>
+                <span class="platform-tag">Web 搜索</span>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Universal Travel Planner Skill v1.0.0 · MIT License</p>
+        <p>Built with ❤️ by <a href="https://github.com/chaoliuzhu65-tech">chaoliuzhu65-tech</a></p>
+        <p style="margin-top: 8px; font-size: 0.75rem;">Powered by WorkBuddy / OpenClaw / Claw</p>
+    </footer>
+
+    <script>
+        // Copy button
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const code = this.parentElement.innerText
+                    .replace('复制', '').replace('已复制!', '')
+                    .trim();
+                navigator.clipboard.writeText(code).then(() => {
+                    this.textContent = '已复制!';
+                    setTimeout(() => { this.textContent = '复制'; }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

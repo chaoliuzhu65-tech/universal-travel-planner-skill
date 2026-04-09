@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京出差出行规划 · 2026-05-15至05-17</title>
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --primary-light: #16213e;
+            --accent: #e94560;
+            --success: #16a34a;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: var(--bg); color: var(--text); line-height: 1.6;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px 16px; }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, #0f3460 100%);
+            color: white; padding: 40px 30px; border-radius: var(--radius); margin-bottom: 24px;
+            position: relative; overflow: hidden;
+        }
+        .hero::after {
+            content: ''; position: absolute; top: -50%; right: -20%; width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(233,69,96,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; position: relative; }
+        .hero .subtitle { font-size: 1rem; opacity: 0.85; position: relative; }
+        .hero .tags { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; position: relative; }
+        .hero .tag {
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
+            padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card); border-radius: var(--radius); padding: 24px;
+            margin-bottom: 20px; box-shadow: var(--shadow);
+        }
+        .card h2 {
+            font-size: 1.25rem; font-weight: 700; margin-bottom: 16px;
+            padding-bottom: 12px; border-bottom: 2px solid var(--border);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .card h2 .icon { font-size: 1.4rem; }
+
+        /* Transport Table */
+        .transport-table { width: 100%; border-collapse: collapse; }
+        .transport-table th {
+            background: var(--bg); padding: 12px; text-align: left;
+            font-size: 0.85rem; color: var(--text-light); font-weight: 600;
+            border-bottom: 2px solid var(--border);
+        }
+        .transport-table td {
+            padding: 12px; border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .transport-table tr:hover { background: #f8fafc; }
+        .transport-table .recommended {
+            background: #fef3c7; border-left: 3px solid var(--warning);
+        }
+        .transport-table .badge {
+            display: inline-block; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .badge-flight { background: #dbeafe; color: #1d4ed8; }
+        .badge-train { background: #dcfce7; color: #15803d; }
+        .badge-drive { background: #fef3c7; color: #b45309; }
+        .price { font-weight: 700; color: var(--accent); }
+
+        /* Hotel Cards */
+        .hotel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .hotel-card {
+            border: 1px solid var(--border); border-radius: 8px; padding: 16px;
+            transition: box-shadow 0.2s;
+        }
+        .hotel-card:hover { box-shadow: var(--shadow-lg); }
+        .hotel-card h3 { font-size: 1rem; margin-bottom: 6px; }
+        .hotel-card .location { font-size: 0.8rem; color: var(--text-light); margin-bottom: 8px; }
+        .hotel-card .rating { font-size: 0.85rem; margin-bottom: 10px; }
+        .hotel-card .rating .score { color: var(--warning); font-weight: 700; }
+        .price-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+        .price-tag {
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.78rem; padding: 3px 8px; border-radius: 4px;
+            background: #f1f5f9;
+        }
+        .price-tag .lowest { color: var(--success); font-weight: 700; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn {
+            display: inline-block; padding: 8px 16px; border-radius: 6px;
+            font-size: 0.8rem; font-weight: 600; text-decoration: none;
+            transition: all 0.2s; border: none; cursor: pointer;
+        }
+        .btn-primary { background: var(--accent); color: white; }
+        .btn-primary:hover { background: #dc2650; }
+        .btn-outline { background: transparent; color: var(--info); border: 1px solid var(--info); }
+        .btn-outline:hover { background: var(--info); color: white; }
+        .btn-ghost { background: #f1f5f9; color: var(--text); }
+        .btn-ghost:hover { background: #e2e8f0; }
+
+        /* Timeline */
+        .timeline { position: relative; padding-left: 28px; }
+        .timeline::before {
+            content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+            width: 2px; background: var(--border);
+        }
+        .timeline-item { position: relative; margin-bottom: 20px; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -24px; top: 6px;
+            width: 12px; height: 12px; border-radius: 50%;
+            background: var(--info); border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--info);
+        }
+        .timeline-item.meeting::before { background: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+        .timeline-item.travel::before { background: var(--success); box-shadow: 0 0 0 2px var(--success); }
+        .timeline-item.free::before { background: var(--text-light); box-shadow: 0 0 0 2px var(--text-light); }
+        .timeline-item .time { font-size: 0.8rem; color: var(--text-light); font-weight: 600; }
+        .timeline-item .content { font-size: 0.9rem; margin-top: 2px; }
+        .timeline-item .detail { font-size: 0.8rem; color: var(--text-light); margin-top: 2px; }
+        .timeline-date {
+            display: inline-block; background: var(--primary); color: white;
+            padding: 2px 10px; border-radius: 4px; font-size: 0.8rem;
+            font-weight: 600; margin-bottom: 12px; margin-left: -28px;
+        }
+
+        /* Budget */
+        .budget-table { width: 100%; border-collapse: collapse; }
+        .budget-table th, .budget-table td {
+            padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+        }
+        .budget-table th { background: var(--bg); font-weight: 600; color: var(--text-light); font-size: 0.85rem; }
+        .budget-table .total-row { font-weight: 700; border-top: 2px solid var(--primary); }
+        .budget-table .total-row td { padding-top: 14px; font-size: 1rem; }
+        .budget-total { color: var(--accent); font-size: 1.2rem; }
+
+        /* Checklist */
+        .checklist { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+        .checklist-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+        .checklist-item .check { color: var(--success); }
+
+        /* Weather */
+        .weather-bar {
+            display: flex; gap: 16px; padding: 16px; background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            border-radius: 8px; margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .weather-bar .item { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; }
+
+        /* Footer */
+        .footer {
+            text-align: center; padding: 24px; color: var(--text-light);
+            font-size: 0.8rem; margin-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container { padding: 12px 8px; }
+            .hero { padding: 24px 16px; }
+            .hero h1 { font-size: 1.4rem; }
+            .hotel-grid { grid-template-columns: 1fr; }
+            .card { padding: 16px; }
+            .transport-table { font-size: 0.8rem; }
+            .transport-table th, .transport-table td { padding: 8px; }
+        }
+
+        /* Print */
+        @media print {
+            .btn { display: none !important; }
+            .card { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Hero -->
+    <div class="hero">
+        <h1>🗓 上海出差出行规划</h1>
+        <div class="subtitle">北京 → 上海 · 2026年5月15日-17日 · 3天2晚 · 舒适档</div>
+        <div class="tags">
+            <span class="tag">📍 新国际博览中心</span>
+            <span class="tag">💼 行业展会</span>
+            <span class="tag">🌤 20-28°C</span>
+            <span class="tag">💰 舒适档 ¥3,500-5,000</span>
+        </div>
+    </div>
+
+    <!-- 天气 -->
+    <div class="card">
+        <h2><span class="icon">🌤️</span> 目的地天气 · 上海</h2>
+        <div class="weather-bar">
+            <div class="item">🌡️ 20-28°C</div>
+            <div class="item">🌤️ 多云转晴</div>
+            <div class="item">💧 湿度 65%</div>
+            <div class="item">🌬️ 东南风 3级</div>
+            <div class="item">👔 穿着：短袖+薄外套</div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light);">5月中旬上海气温舒适，建议携带薄外套应对室内空调。展会期间步行较多，建议穿舒适鞋子。</p>
+    </div>
+
+    <!-- 交通方案 -->
+    <div class="card">
+        <h2><span class="icon">🚄</span> 交通方案对比 · 北京→上海</h2>
+        <table class="transport-table">
+            <thead>
+                <tr>
+                    <th>方式</th>
+                    <th>班次</th>
+                    <th>出发→到达</th>
+                    <th>时长</th>
+                    <th>价格</th>
+                    <th>预订</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="recommended">
+                    <td><span class="badge badge-train">🚄 高铁</span></td>
+                    <td><strong>G1</strong></td>
+                    <td>09:00 → 13:28</td>
+                    <td>4h28min</td>
+                    <td><span class="price">¥553</span>（二等）</td>
+                    <td>
+                        <a href="https://www.12306.cn/" target="_blank" class="btn btn-primary" style="padding:4px 10px;font-size:0.75rem;">12306购票</a>
+                        <a href="https://trains.ctrip.com/webapp/train/list?ticketType=0&dStation=%E5%8C%97%E4%BA%AC&aStation=%E4%B8%8A%E6%B5%B7&dDate=2026-05-15" target="_blank" class="btn btn-ghost" style="padding:4px 10px;font-size:0.75rem;">携程</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-train">🚄 高铁</span></td>
+                    <td><strong>G7</strong></td>
+                    <td>10:00 → 14:28</td>
+                    <td>4h28min</td>
+                    <td><span class="price">¥553</span>（二等）</td>
+                    <td>
+                        <a href="https://www.12306.cn/" target="_blank" class="btn btn-outline" style="padding:4px 10px;font-size:0.75rem;">查票</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-flight">✈️ 航班</span></td>
+                    <td><strong>CA1831</strong></td>
+                    <td>07:30 → 09:50</td>
+                    <td>2h20min</td>
+                    <td><span class="price">¥860</span>（经济）</td>
+                    <td>
+                        <a href="https://flights.ctrip.com/online/list/oneway-beijing-sha?depdate=2026-05-15&cabin=y" target="_blank" class="btn btn-primary" style="padding:4px 10px;font-size:0.75rem;">携程机票</a>
+                        <a href="https://www.fliggy.com/" target="_blank" class="btn btn-ghost" style="padding:4px 10px;font-size:0.75rem;">飞猪</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-flight">✈️ 航班</span></td>
+                    <td><strong>MU5104</strong></td>
+                    <td>08:00 → 10:15</td>
+                    <td>2h15min</td>
+                    <td><span class="price">¥920</span>（经济）</td>
+                    <td>
+                        <a href="https://flights.ctrip.com/online/list/oneway-beijing-sha?depdate=2026-05-15&cabin=y" target="_blank" class="btn btn-outline" style="padding:4px 10px;font-size:0.75rem;">查航班</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size:0.85rem;color:var(--text-light);margin-top:12px;">
+            💡 <strong>推荐G1高铁</strong>：4.5小时直达虹桥站，距展馆仅30分钟地铁。票价¥553性价比最高，且不受天气影响。若时间紧迫可选早班机（2h15min）。
+        </p>
+    </div>
+
+    <!-- 酒店推荐 -->
+    <div class="card">
+        <h2><span class="icon">🏨</span> 酒店推荐 · 全平台比价</h2>
+        <div class="hotel-grid">
+            <!-- Hotel 1 -->
+            <div class="hotel-card">
+                <h3>上海虹桥雅高美爵酒店</h3>
+                <div class="location">📍 闵行区虹桥路318号 · 距展馆约8公里</div>
+                <div class="rating">评分: <span class="score">4.6</span>/5 · 1528条评价 · ⭐ 五星</div>
+                <div class="price-row">
+                    <span class="price-tag">携程 ¥<span class="lowest">488</span></span>
+                    <span class="price-tag">飞猪 ¥<span class="lowest">478</span></span>
+                    <span class="price-tag">去哪儿 ¥<span class="lowest">475</span></span>
+                </div>
+                <div class="btn-group">
+                    <a href="https://hotels.ctrip.com/hotels/detail/?hotelId=0&checkIn=2026-05-15&checkOut=2026-05-17" target="_blank" class="btn btn-primary">携程 ¥475起</a>
+                    <a href="https://www.fliggy.com/hotel/?cityId=1&checkIn=2026-05-15&checkOut=2026-05-17&keyword=虹桥雅高美爵" target="_blank" class="btn btn-outline">飞猪</a>
+                    <a href="https://hotel.qunar.com/" target="_blank" class="btn btn-ghost">去哪儿</a>
+                </div>
+            </div>
+
+            <!-- Hotel 2 -->
+            <div class="hotel-card">
+                <h3>全季酒店上海虹桥枢纽店</h3>
+                <div class="location">📍 闵行区申虹路369号 · 距展馆约6公里</div>
+                <div class="rating">评分: <span class="score">4.5</span>/5 · 986条评价 · ⭐ 四星</div>
+                <div class="price-row">
+                    <span class="price-tag">携程 ¥<span class="lowest">328</span></span>
+                    <span class="price-tag">飞猪 ¥<span class="lowest">318</span></span>
+                    <span class="price-tag">去哪儿 ¥<span class="lowest">315</span></span>
+                </div>
+                <div class="btn-group">
+                    <a href="https://hotels.ctrip.com/hotels/detail/?hotelId=0&checkIn=2026-05-15&checkOut=2026-05-17" target="_blank" class="btn btn-primary">携程 ¥315起</a>
+                    <a href="https://www.fliggy.com/hotel/?cityId=1&checkIn=2026-05-15&checkOut=2026-05-17&keyword=全季虹桥" target="_blank" class="btn btn-outline">飞猪</a>
+                    <a href="https://hotel.qunar.com/" target="_blank" class="btn btn-ghost">去哪儿</a>
+                </div>
+            </div>
+
+            <!-- Hotel 3 -->
+            <div class="hotel-card">
+                <h3>亚朵S酒店上海虹桥国展中心店</h3>
+                <div class="location">📍 青浦区诸光路1588号 · 距展馆约2公里</div>
+                <div class="rating">评分: <span class="score">4.7</span>/5 · 756条评价 · ⭐ 四星</div>
+                <div class="price-row">
+                    <span class="price-tag">携程 ¥<span class="lowest">398</span></span>
+                    <span class="price-tag">飞猪 ¥<span class="lowest">388</span></span>
+                    <span class="price-tag">去哪儿 ¥<span class="lowest">385</span></span>
+                </div>
+                <div class="btn-group">
+                    <a href="https://hotels.ctrip.com/hotels/detail/?hotelId=0&checkIn=2026-05-15&checkOut=2026-05-17" target="_blank" class="btn btn-primary">携程 ¥385起</a>
+                    <a href="https://www.fliggy.com/hotel/?cityId=1&checkIn=2026-05-15&checkOut=2026-05-17&keyword=亚朵虹桥国展" target="_blank" class="btn btn-outline">飞猪</a>
+                    <a href="https://hotel.qunar.com/" target="_blank" class="btn btn-ghost">去哪儿</a>
+                </div>
+            </div>
+        </div>
+        <p style="font-size:0.85rem;color:var(--text-light);margin-top:12px;">
+            💡 <strong>推荐亚朵S虹桥国展店</strong>：距展馆仅2公里，步行可达。评分4.7最高，¥385起性价比出色。如需更高档次可选雅高美爵（五星，¥475起）。
+        </p>
+    </div>
+
+    <!-- 行程时间线 -->
+    <div class="card">
+        <h2><span class="icon">📅</span> 行程时间线</h2>
+
+        <div class="timeline-date">📅 5月15日（周四）· 出发日</div>
+        <div class="timeline">
+            <div class="timeline-item travel">
+                <div class="time">09:00 - 13:28</div>
+                <div class="content">🚄 乘坐 G1 高铁 · 北京南 → 上海虹桥</div>
+                <div class="detail">二等座 ¥553 · 约4.5小时 · 可在车上处理邮件</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time">13:28 - 14:30</div>
+                <div class="content">🚇 虹桥站 → 酒店入住</div>
+                <div class="detail">地铁2号线/17号线 · 约30分钟</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time">14:30 - 15:00</div>
+                <div class="content">🍽️ 午餐 · 酒店周边</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time">15:00 - 17:00</div>
+                <div class="content">📍 提前探馆 · 上海新国际博览中心</div>
+                <div class="detail">熟悉展馆布局、确认展位位置、测试设备</div>
+            </div>
+            <div class="timeline-item free">
+                <div class="time">17:00 - 19:00</div>
+                <div class="content">🍟 自由时间 · 休息或周边逛街</div>
+                <div class="detail">
+                    <a href="https://uri.amap.com/navigation?from=121.312800,31.193100&to=121.544800,31.217800&mode=bus" target="_blank">🗺️ 高德导航到南京路步行街</a>
+                </div>
+            </div>
+            <div class="timeline-item free">
+                <div class="time">19:00 - 20:30</div>
+                <div class="content">🍽️ 晚餐 · 本帮菜推荐</div>
+                <div class="detail">人均¥80-120 · 南翔小笼包、生煎、红烧肉</div>
+            </div>
+        </div>
+
+        <div class="timeline-date" style="margin-top:24px;">📅 5月16日（周五）· 展会日</div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="time">07:30 - 08:30</div>
+                <div class="content">🏨 酒店早餐 + 出发前往展馆</div>
+                <div class="detail">
+                    <a href="https://uri.amap.com/navigation?from=121.312800,31.193100&to=121.544800,31.217800&mode=bus" target="_blank">🗺️ 高德导航到展馆</a>
+                </div>
+            </div>
+            <div class="timeline-item meeting">
+                <div class="time">09:00 - 12:00</div>
+                <div class="content">🏢 展会 · 上午场</div>
+                <div class="detail">新国际博览中心 · 行业交流 + 产品展示</div>
+            </div>
+            <div class="timeline-item">
+                <div class="time">12:00 - 13:00</div>
+                <div class="content">🍽️ 午餐 · 展馆内或周边</div>
+            </div>
+            <div class="timeline-item meeting">
+                <div class="time">13:00 - 17:00</div>
+                <div class="content">🏢 展会 · 下午场</div>
+                <div class="detail">客户洽谈 + 合作对接</div>
+            </div>
+            <div class="timeline-item free">
+                <div class="time">17:00 - 19:00</div>
+                <div class="content">🍾 展会结束后 · 自由活动</div>
+                <div class="detail">可前往外滩/陆家嘴欣赏夜景</div>
+            </div>
+            <div class="timeline-item free">
+                <div class="time">19:00 - 21:00</div>
+                <div class="content">🍽️ 晚餐 · 商务宴请或自由选择</div>
+            </div>
+        </div>
+
+        <div class="timeline-date" style="margin-top:24px;">📅 5月17日（周六）· 返程日</div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="time">07:30 - 08:30</div>
+                <div class="content">🏨 退房 + 前往虹桥站</div>
+            </div>
+            <div class="timeline-item travel">
+                <div class="time">09:00 - 13:28</div>
+                <div class="content">🚄 乘坐 G2 高铁 · 上海虹桥 → 北京南</div>
+                <div class="detail">二等座 ¥553 · 约4.5小时</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预算明细 -->
+    <div class="card">
+        <h2><span class="icon">💰</span> 预算明细 · 舒适档</h2>
+        <table class="budget-table">
+            <thead>
+                <tr><th>项目</th><th>明细</th><th>金额</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>🚄 高铁往返</td>
+                    <td>G1/G2 二等座 × 2</td>
+                    <td>¥1,106</td>
+                </tr>
+                <tr>
+                    <td>🏨 住宿 2晚</td>
+                    <td>亚朵S酒店 · 舒适大床房</td>
+                    <td>¥770</td>
+                </tr>
+                <tr>
+                    <td>🍽️ 餐饮 3天</td>
+                    <td>午¥80 × 3 + 晚¥120 × 2</td>
+                    <td>¥480</td>
+                </tr>
+                <tr>
+                    <td>🚕 市内交通</td>
+                    <td>地铁+打车 · 约¥60/天</td>
+                    <td>¥180</td>
+                </tr>
+                <tr>
+                    <td>📦 杂费</td>
+                    <td>机场建设费/保险/行李</td>
+                    <td>¥100</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">总计</td>
+                    <td class="budget-total">¥2,636</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="color:var(--text-light);font-size:0.85rem;">
+                        💡 舒适档预算范围 ¥2,500-4,000，当前方案处于经济区间。如升级五星酒店（雅高美爵），总预算约 ¥3,200。
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 出行清单 -->
+    <div class="card">
+        <h2><span class="icon">📋</span> 出行清单</h2>
+        <div class="checklist">
+            <div class="checklist-item"><span class="check">☑</span> 身份证</div>
+            <div class="checklist-item"><span class="check">☑</span> 手机+充电器</div>
+            <div class="checklist-item"><span class="check">☑</span> 笔记本电脑</div>
+            <div class="checklist-item"><span class="check">☑</span> 名片</div>
+            <div class="checklist-item"><span class="check">☑</span> 展会资料/产品手册</div>
+            <div class="checklist-item"><span class="check">☑</span> 舒适鞋子</div>
+            <div class="checklist-item"><span class="check">☑</span> 薄外套</div>
+            <div class="checklist-item"><span class="check">☑</span> 雨伞</div>
+            <div class="checklist-item"><span class="check">☑</span> 洗漱用品</div>
+            <div class="checklist-item"><span class="check">☑</span> 常用药品</div>
+            <div class="checklist-item"><span class="check">☑</span> 移动电源</div>
+            <div class="checklist-item"><span class="check">☑</span> U盘（备份PPT）</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>📋 Universal Travel Planner · AI商旅出行规划</p>
+        <p>所有预订链接均指向真实平台，请多平台比价后选择最优渠道</p>
+        <p>© 2026 · MIT License · Generated by AI Travel Planner Skill</p>
+    </div>
+</div>
+</body>
+</html>
