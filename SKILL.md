@@ -367,6 +367,48 @@ AI 伙伴应按以下逻辑选择输出格式：
 3. 用户要求PDF → 生成 PDF
 4. 以上都没有 → 输出 Markdown 文本
 
+### 6.2.1 飞书云文档生成指令
+
+```yaml
+# 飞书云文档创建（使用 lark-mcp MCP）
+工具: mcp_call_tool(server="feishu-integration", tool="docx_builtin_import")
+参数:
+  data:
+    file_name: "{目的地}出行规划_{日期}"
+    markdown: |
+      # {出发地}→{目的地} 出行规划
+      ## {date_range}
+      （完整 Markdown 格式行程报告）
+  useUAT: false
+
+# 文档权限设置
+工具: mcp_call_tool(server="feishu-integration", tool="drive_v1_permissionMember_create")
+参数:
+  path: { token: "{document_id}" }
+  params: { type: "docx" }
+  data:
+    member_type: "openchat"
+    member_id: "{chat_id}"
+    perm: "view"
+
+# 发送文档链接
+工具: mcp_call_tool(server="feishu-integration", tool="im_v1_message_create")
+参数:
+  params: { receive_id_type: "chat_id" }
+  data:
+    receive_id: "{chat_id}"
+    msg_type: "text"
+    content: '{"text": "📝 出行规划已生成\n链接: https://open.feishu.cn/docx/{document_id}"}'
+```
+
+**lark-mcp v0.5.1 核心工具**:
+- `docx_builtin_import` — 导入 Markdown 创建飞书文档
+- `docx_v1_document_rawContent` — 读取文档内容
+- `drive_v1_permissionMember_create` — 设置文档权限
+- `im_v1_message_create` — 发送消息到群/对话
+- `im_v1_chat_list` — 获取群列表
+- `bitable_v1_appTableRecord_create` — 多维表格写入（出行申请表等）
+
 ### 6.3 设计规范
 
 - **色系**：商务简约（深蓝 `#1a1a2e` + 红色 `#e94560` + 白色 `#ffffff`）
